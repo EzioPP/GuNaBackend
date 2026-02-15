@@ -1,7 +1,11 @@
 import express from 'express';
-import logger from '@/shared/logger';
+import { authRoutes } from './routes/auth.routes';
+import { errorHandler } from './error.middleware';
 
-const app = express();
+export const app = express();
+
 app.use(express.json());
 
-export default app;
+app.use('/auth', authRoutes);
+
+app.use(errorHandler);

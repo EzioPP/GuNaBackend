@@ -15,19 +15,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Login {
-  id        Int   @id @default(autoincrement())
-  username  String   @unique
-  password  String
-  createdAt DateTime @default(now())
+model User {
+  userId     Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  username   String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  createdAt  DateTime @default(now())
   permission Int
+  files      File[]
 }
 
 model File {
-  id        Int   @id @default(autoincrement())
-  filename  String
-  path      String
+  id        Int      @id @default(autoincrement())
+  filename  String   @db.VarChar(255)
+  path      String   @db.VarChar(255)
   createdAt DateTime @default(now())
+  size      Int
   isPublic  Boolean  @default(false)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [userId])
 }
