@@ -1,4 +1,4 @@
-import app from '@/modules/controller/rest/app';
+import { app } from '@/modules/controller/rest/app';
 import logger from '@/shared/logger';
 
 const PORT = process.env.PORT || 3000;

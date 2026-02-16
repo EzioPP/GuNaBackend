@@ -13,7 +13,7 @@ export class AuthService {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) throw new UnauthorizedError('Invalid credentials');
 
-    const token = await new SignJWT({ userId: user.userId, permission: user.permission })
+    const token = await new SignJWT({ userId: user.id, permission: user.permission })
       .setProtectedHeader({ alg: 'HS256' })
       .setExpirationTime('1h')
       .sign(new TextEncoder().encode(process.env.JWT_SECRET!));

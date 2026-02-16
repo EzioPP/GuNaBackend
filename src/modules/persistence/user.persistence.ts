@@ -34,7 +34,7 @@ export class UserPersistence {
   async getUserById(id: number) {
     try {
       const user = await this.prisma.user.findUnique({
-        where: { userId: id },
+        where: { id: id },
       });
       if (!user) throw new NotFoundError('User');
       return user;

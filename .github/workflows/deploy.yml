@@ -5,20 +5,25 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fazer checkout do código principal
-        uses: actions/checkout@v6
-
-      - name: Configurar Node.js
-        uses: actions/setup-node@v3
+      - name: Implantar via SSH com PM2
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          node-version: 'latest'
-
-      - name: Instalar dependências
-        run: npm ci
-
-      - name: Build do projeto
-        run: npm run build
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd /data
+            git pull origin main
+            npm ci
+            npm run build
+            if pm2 describe gunabackend >/dev/null; then
+              pm2 restart gunabackend
+            else
+              pm2 start npm --name gunabackend -- run start
+            fi
+            pm2 save

@@ -11,27 +11,68 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  schemas  = ["user_data", "file_data", "newsletter_data"]
   // Ignore
   url      = env("DATABASE_URL")
 }
 
 model User {
-  userId     Int      @id @default(autoincrement())
-  name       String   @db.VarChar(255)
-  username   String   @unique @db.VarChar(255)
-  password   String   @db.VarChar(255)
-  createdAt  DateTime @default(now())
-  permission Int
-  files      File[]
+  id       Int           @id @default(autoincrement())
+  name         String        @db.VarChar(255)
+  username     String        @unique @db.VarChar(255)
+  password     String        @db.VarChar(255)
+  created_at    DateTime      @default(now())
+  permission   Int
+  files        File[]
+  userStorages UserStorage[]
+
+  @@map("users")
+  @@schema("user_data")
 }
 
 model File {
   id        Int      @id @default(autoincrement())
   filename  String   @db.VarChar(255)
   path      String   @db.VarChar(255)
-  createdAt DateTime @default(now())
+  created_at DateTime @default(now())
   size      Int
-  isPublic  Boolean  @default(false)
-  userId    Int
-  user      User     @relation(fields: [userId], references: [userId])
+  is_public  Boolean  @default(false)
+  user_id    Int
+  user      User     @relation(fields: [user_id], references: [id])
+
+  @@map("files")
+  @@schema("file_data")
+}
+
+model UserStorage {
+  id         Int  @id @default(autoincrement())
+  user_id     Int @unique
+  used_space  BigInt
+  total_space BigInt  @default(5368709120) //5GB
+  user       User @relation(fields: [user_id], references: [id])
+
+  @@map("user_storage")
+  @@schema("user_data")
+}
+model Poster {
+  id             Int          @id @default(autoincrement())
+  name           String       @db.VarChar(255)
+  created_at      DateTime     @default(now())
+  profile_picture String       @db.VarChar(255)
+  events    Event[]
+
+  @@map("posters")
+  @@schema("newsletter_data")
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(255)
+  content   String   @db.Text
+  created_at DateTime @default(now())
+  poster_id  Int
+  poster    Poster   @relation(fields: [poster_id], references: [id])
+
+  @@map("events")
+  @@schema("newsletter_data")
 }
