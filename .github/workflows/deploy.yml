@@ -17,7 +17,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             set -e
-            cd /data
+            if [ ! -d /data/GuNaBackend/.git ]; then
+              git clone https://github.com/EzioPP/GuNaBackend.git /data/GuNaBackend
+            fi
+            cd /data/GuNaBackend
             git pull origin main
             npm ci
             npm run build
