@@ -12,13 +12,13 @@ export const fileRoutes = Router();
 
 fileRoutes.post(
   '/upload',
-  /* 	authenticate, */
+  	authenticate,
   upload.single('file'),
   async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       const uploadedFile = req.file;
       if (!uploadedFile) throw new ValidationError('File is required');
-      /* 			if (!req.user) throw new ValidationError('User context missing'); */
+      			if (!req.user) throw new ValidationError('User context missing');
 
       const isPublic = String(req.body?.isPublic ?? 'false').toLowerCase() === 'true';
 
@@ -27,7 +27,7 @@ fileRoutes.post(
         path: path.join('uploads', uploadedFile.filename),
         size: uploadedFile.size,
         is_public: isPublic,
-        user_id: 1,
+        user_id: req.user.userId,
       });
 
       res.status(201).json(record);

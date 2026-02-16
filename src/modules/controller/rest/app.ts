@@ -6,7 +6,7 @@ import { errorHandler } from './error.middleware';
 
 export const app = express();
 
-const apiPrefix = '/api';
+const apiPrefix = process.env.API_PREFIX || '';
 
 app.use(cors());
 app.use(express.json());
