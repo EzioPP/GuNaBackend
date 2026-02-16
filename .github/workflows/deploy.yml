@@ -11,10 +11,14 @@ jobs:
     steps:
       - name: Implantar via SSH com PM2
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: DATABASE_URL,JWT_SECRET
           script: |
             set -e
             if [ ! -d /data/GuNaBackend/.git ]; then
@@ -34,8 +38,8 @@ jobs:
             npm ci
             npm run build
             if pm2 describe gunabackend >/dev/null; then
-              pm2 restart gunabackend
+              pm2 restart ecosystem.config.js --update-env
             else
-              pm2 start npm --name gunabackend -- run start
+              pm2 start ecosystem.config.js --env production
             fi
             pm2 save
