@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "build": "tsc",
-    "start": "node dist/src/index.js",
+    "start": "node -r module-alias/register dist/src/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -42,6 +42,7 @@
     "typescript-eslint": "^8.55.0"
   },
   "dependencies": {
+    "module-alias": "^2.2.3",
     "@prisma/adapter-pg": "^7.4.0",
     "@prisma/client": "^6.19.2",
     "bcryptjs": "^3.0.3",
@@ -52,5 +53,9 @@
     "multer": "^2.0.2",
     "pg": "^8.18.0",
     "winston": "^3.19.0"
+  },
+  "_moduleAliases": {
+    "@": "dist/src",
+    "@@": "dist"
   }
 }
