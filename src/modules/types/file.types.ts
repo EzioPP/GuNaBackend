@@ -21,3 +21,24 @@ export type FileUploadResponse = {
   filename: string;
   remainingStorage: number;
 };
+
+export type FileUpdateInput = {
+  filename?: string;
+  is_public?: boolean;
+};
+
+export type PaginatedFiles = {
+  files: {
+    id: number;
+    filename: string;
+    path: string;
+    created_at: Date;
+    size: number;
+    is_public: boolean;
+    user_id: number;
+  }[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};

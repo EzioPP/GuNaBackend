@@ -1,6 +1,8 @@
 import { app } from '@/modules/controller/rest/app';
 import logger from '@/shared/logger';
+import { config } from 'dotenv';
 
+config();
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
