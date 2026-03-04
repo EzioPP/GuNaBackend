@@ -2,10 +2,6 @@ import { PrismaClient, Prisma } from '@@/generated/prisma/client';
 import { UserCreateInput, RemainingStorage } from '@/modules/types';
 import {
   NotFoundError,
-  ConflictError,
-  InternalError,
-  AppError,
-  ValidationError,
 } from '@/shared/errors';
 
 export class UserStoragePersistence {

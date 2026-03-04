@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
+    "create:user": "ts-node -r tsconfig-paths/register scripts/create-user.ts",
     "build": "tsc",
     "start": "node -r module-alias/register dist/src/index.js",
     "lint": "eslint .",

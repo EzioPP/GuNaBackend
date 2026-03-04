@@ -76,3 +76,5 @@ model Event {
   @@map("events")
   @@schema("newsletter_data")
 }
+
+
