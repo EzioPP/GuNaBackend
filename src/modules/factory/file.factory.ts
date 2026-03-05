@@ -6,7 +6,7 @@ class FileFactory {
   static create() {
     const filePersistence = new FilePersistence(prisma);
     const userStoragePersistence = new UserStoragePersistence(prisma);
-    return new FileService(filePersistence, userStoragePersistence);
+    return new FileService(filePersistence, userStoragePersistence, prisma);
   }
 }
 

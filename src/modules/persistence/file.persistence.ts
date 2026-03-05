@@ -1,9 +1,9 @@
 import { FileCreateInput, FileUpdateInput } from '@/modules/types';
-import { PrismaClient, Prisma } from '@@/generated/prisma/client';
+import { Prisma } from '@@/generated/prisma/client';
 import { AppError, InternalError, NotFoundError } from '@/shared/errors';
 
 export class FilePersistence {
-  constructor(private readonly prisma: PrismaClient) {
+  constructor(private readonly prisma: Prisma.TransactionClient) {
     //
   }
 

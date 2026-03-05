@@ -1,11 +1,11 @@
-import { PrismaClient, Prisma } from '@@/generated/prisma/client';
-import { UserCreateInput, RemainingStorage } from '@/modules/types';
+import { Prisma } from '@@/generated/prisma/client';
+import { RemainingStorage } from '@/modules/types';
 import {
   NotFoundError,
 } from '@/shared/errors';
 
 export class UserStoragePersistence {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: Prisma.TransactionClient) {}
 
   async remainingStorage(userId: number): Promise<RemainingStorage> {
     const userStorage = await this.prisma.userStorage.findFirst({
