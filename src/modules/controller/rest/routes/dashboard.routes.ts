@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import path from 'path';
 
 export const dashboardRoutes = Router();
 
@@ -9,7 +10,13 @@ const GUROZORD_BASE = process.env.GUROZORD_URL || 'http://localhost:3001';
  * Forwards: GET, POST, PUT, DELETE, PATCH under /dashboard/*
  */
 dashboardRoutes.all('/*', async (req: Request, res: Response) => {
-  const targetUrl = `${GUROZORD_BASE}/dashboard${req.path === '/' ? '' : req.path}`;
+  const normalized = path.posix.normalize(req.path);
+  if (normalized.startsWith('..') || normalized.includes('/..')) {
+    res.status(400).json({ success: false, error: 'Invalid path' });
+    return;
+  }
+
+  const targetUrl = `${GUROZORD_BASE}/dashboard${normalized === '/' ? '' : normalized}`;
 
   try {
     const headers: Record<string, string> = {
